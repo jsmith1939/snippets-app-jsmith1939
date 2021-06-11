@@ -86,6 +86,8 @@ export default function Post({
     setTimeout(() => {
       window.location.reload()
     },1000)
+    
+    toast.success("Post Deleted");
   }
 
   const handleCommentSubmit = async (event) => {
