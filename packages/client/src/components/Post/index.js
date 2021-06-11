@@ -15,6 +15,8 @@ import { timeSince } from 'utils/timeSince'
 import { LikeIcon, LikeIconFill, ReplyIcon, TrashIcon } from 'components'
 import './Post.scss'
 import { toast } from 'react-toastify'
+import Modal from "react-bootstrap/Modal";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const initialState = {
   commentText: '',
@@ -35,6 +37,9 @@ export default function Post({
   } = useProvideAuth()
   const [likedState, setLiked] = useState(likes.includes(user.uid))
   const [likesState, setLikes] = useState(likes.length)
+
+  const [isOpen, setIsOpen] = useState(false)
+
   const handleInputChange = (event) => {
     setData({
       ...data,
@@ -66,8 +71,21 @@ export default function Post({
 
   // Complete function to call server endpoint /posts/:id
   // with delete request
+  // 
   const handleDeletePost = async () => {
     console.log('Delete post', _id)
+    setData({
+      ...data,
+      isSubmitting: true
+    });
+
+    await axios.delete(`posts/${_id}`, {
+      data: { userId: user.uid }
+    });
+
+    setTimeout(() => {
+      window.location.reload()
+    },1000)
   }
 
   const handleCommentSubmit = async (event) => {
@@ -110,6 +128,20 @@ export default function Post({
 
   return (
     <>
+      <Modal
+        show={isOpen}
+        onHide={() => setIsOpen(false)}
+        style={{ 'color': 'black'}}
+      >
+        <Modal.Header>
+          <Modal.Title>Just Checking</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this post?</Modal.Body>
+        <Modal.Footer>
+          <button onClick={() => setIsOpen(false)}>Cancel</button>
+          <button onClick={handleDeletePost}>Delete</button>
+        </Modal.Footer>
+      </Modal>
       <ListGroup.Item
         className='bg-white text-danger px-3 rounded-edge'
         as={'div'}
@@ -120,11 +152,12 @@ export default function Post({
             className='mr-4 bg-border-color rounded-circle overflow-hidden ml-2 p-1'
             style={{ height: '50px', width: '50px', marginTop: '0px'}}
           >
-            <Figure.Image src={author.profile_image} className='w-100 h-100' />
+            <Link to={`/u/${author.username}`}><Figure.Image src={author.profile_image} className='w-100 h-100'/></Link>
           </Figure>
           <Media.Body className='w-50'>
             <div className='row d-flex align-items-center'>
-              <span className='text-muted mr-1 username'>@{author.username}</span>
+              <Link to={`/u/${author.username}`}><span className='text-muted mr-1 username'>@{author.username}</span></Link>
+              
               <pre className='m-0 text-muted'>{' - '}</pre>
               <span className='text-muted'>{timeSince(created)} ago</span>
             </div>
@@ -140,7 +173,7 @@ export default function Post({
               <div className='d-flex align-items-center'>
                 {user.username === author.username && (
                   <Container className='close'>
-                    <TrashIcon onClick={handleDeletePost} />
+                    <TrashIcon onClick={() => setIsOpen(true)} />
                   </Container>
                 )}
               </div>
