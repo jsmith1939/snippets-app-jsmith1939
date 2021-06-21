@@ -1,0 +1,10 @@
+#avatar {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+
+#avatar:hover {
+    border: 3px dotted white;
+}
+

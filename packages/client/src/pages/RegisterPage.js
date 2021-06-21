@@ -11,6 +11,7 @@ import useRouter from 'hooks/useRouter'
 import { useProvideAuth } from 'hooks/useAuth'
 import { LandingHeader, LoadingSpinner } from 'components'
 import { setAuthToken } from 'utils/axiosConfig'
+import Avatar from './Avatar'
 
 const initialState = {
   username: '',
@@ -27,7 +28,7 @@ export default function RegisterPage() {
   const [profileImage, setProfileImage] = useState(getRandomProfileUrl())
 
   function getRandomProfileUrl() {
-    //geneartes random pic in img
+    //generates random pic in img
     let imgs = [
       'bird.svg',
       'dog.svg',
@@ -41,6 +42,8 @@ export default function RegisterPage() {
     let img = imgs[Math.floor(Math.random() * imgs.length)]
     return `/${img}`
   }
+
+  // 
 
   const handleInputChange = (event) => {
     setData({
@@ -120,6 +123,8 @@ export default function RegisterPage() {
                     value={data.password}
                     onChange={handleInputChange}
                 />
+
+                <Avatar picker={(img) => setProfileImage(img)} />
                 </Form.Group>
                 {data.errorMessage && (
                 <span className='form-error text-warning'>{data.errorMessage}</span>
