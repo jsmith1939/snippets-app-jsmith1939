@@ -135,6 +135,13 @@ export default function UserDetailPage({
                     onSubmit={handleUpdatePassword}
                   >
                     <Form.Group>
+                      <Form.Label htmlFor="currentpassword">Enter Current Password</Form.Label>
+                      <Form.Control
+                        type='password'
+                        name='currentpassword'
+                        required
+                        validated={validated}
+                      />
                       <Form.Label htmlFor='password'>New Password</Form.Label>
                       <Form.Control
                         type='password'
