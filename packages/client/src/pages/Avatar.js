@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Container from 'react-bootstrap';
+import { RegisterPage } from './RegisterPage';
 import './style.css';
 
 

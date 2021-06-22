@@ -20,12 +20,15 @@ export default function UserDetailPage({
   },
   history
 }) {
+  const [profileImage, setProfileImage] = useState('')
   const { state } = useProvideAuth()
   const [user, setUser] = useState()
   const [loading, setLoading] = useState(true)
   const [validated, setValidated] = useState(false)
   const [open, setOpen] = useState(false)
   const [data, setData] = useState({
+    confirmPassword: '',
+    currentPassword: '',
     password: '',
     isSubmitting: false,
     errorMessage: null,
@@ -77,10 +80,12 @@ export default function UserDetailPage({
       } = state
       axios.put(`/users/${uid}`, {
         password: data.password,
+        profile_image: profileImage
         
       })
       console.log(data.password, uid, username)
       setValidated(false)
+      history.push('/')
       // don't forget to update loading state and alert success
     } catch (error) {
       setData({
@@ -137,6 +142,15 @@ export default function UserDetailPage({
                     onSubmit={handleUpdatePassword}
                   >
                     <Form.Group>
+                      <Form.Label htmlFor="currentPassword">Enter Current Password</Form.Label>
+                      <Form.Control
+                        type='password'
+                        name='currentPassword'
+                        required
+                        validated={validated}
+                        value={data.currentPassword}
+                        onChange={handleInputChange}
+                      />
                       <Form.Label htmlFor='password'>New Password</Form.Label>
                       <Form.Control
                         type='password'
@@ -145,6 +159,16 @@ export default function UserDetailPage({
                         value={data.password}
                         onChange={handleInputChange}
                       />
+                      <Form.Label htmlFor="confirmPassword">Enter Current Password</Form.Label>
+                      <Form.Control
+                        type='password'
+                        name='confirmPassword'
+                        required
+                        validated={validated}
+                        value={data.confirmPassword}
+                        onChange={handleInputChange}
+                      />
+                      <Avatar picker={(img) => setProfileImage(img)} />
                       <Form.Control.Feedback type='invalid'>
                         New Password is required
                       </Form.Control.Feedback>
