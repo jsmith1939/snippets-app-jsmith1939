@@ -12,6 +12,7 @@ import { useProvideAuth } from 'hooks/useAuth'
 import { useRequireAuth } from 'hooks/useRequireAuth'
 import axios from 'utils/axiosConfig.js'
 import { toast } from "react-toastify";
+import Avatar from './Avatar'
 
 export default function UserDetailPage({
   match: {
@@ -53,6 +54,7 @@ export default function UserDetailPage({
       [event.target.name]: event.target.value,
     })
   }
+
 
   const handleUpdatePassword = async (event) => {
     event.preventDefault()
