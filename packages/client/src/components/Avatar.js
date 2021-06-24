@@ -3,7 +3,8 @@ import './style.css';
 
 
 
-export default function handleAvatar ({picker}) {
+export default function HandleAvatar ({picker, selectedImg}) {
+    const [selected, setSelected] = useState(selectedImg);
     let imgs = [
         '/bird.svg',
         '/dog.svg',
@@ -15,16 +16,22 @@ export default function handleAvatar ({picker}) {
         '/whale.svg',
     ]
 
+    const updateImage = (img) => {
+        picker(img);
+        setSelected(img);
+    }
+
     return (
         <>
         {imgs.map((img) => {
             return (
                 <img
+                    className={img === selected ? 'selected' : null}
                     id='avatar'
                     alt={img}
                     key={img}
                     src={img}
-                    onClick={() => picker(img)}
+                    onClick={() => updateImage(img)}
                 />
             )
         })}

@@ -12,7 +12,7 @@ import { useProvideAuth } from 'hooks/useAuth'
 import { useRequireAuth } from 'hooks/useRequireAuth'
 import axios from 'utils/axiosConfig.js'
 import { toast } from "react-toastify";
-import Avatar from '../components/Post/Avatar'
+import Avatar from '../components/Avatar'
 
 export default function UserDetailPage({
   match: {
@@ -62,9 +62,17 @@ export default function UserDetailPage({
   const handleAvatar = async (event) => {
     event.preventDefault()
     event.stopPropagation()
+    const {
+      user: { uid },
+    } = state
+    console.log(uid)
     await axios.patch(`/users/${uid}`, {
       profile_image: profileImage
     })
+  }
+
+  const handleProfileImage = (image) => {
+    setProfileImage(image)
   }
 
   const handleUpdatePassword = async (event) => {
@@ -86,12 +94,12 @@ export default function UserDetailPage({
       const {
         user: { uid, username },
       } = state
+      console.log(data.password, uid, username)
       axios.put(`/users/${uid}`, {
         password: data.password,
         profile_image: profileImage
         
       })
-      console.log(data.password, uid, username)
       setValidated(false)
       history.push('/')
       // don't forget to update loading state and alert success
@@ -203,7 +211,7 @@ export default function UserDetailPage({
           )}
           {show && (
             <Container animation="false">
-              <Avatar picker={(img) => setProfileImage(img)}/>
+              <Avatar picker={handleProfileImage} selectedImg = {profileImage}/>
               <Form
                 noValidate
                 validated={validated}

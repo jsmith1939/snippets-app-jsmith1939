@@ -49,17 +49,17 @@ router.post('/signup', async (req, res) => {
 
 router.post('/signin', async (req, res) => {
   const { username, password, email } = req.body
-  if (!username || !password  || !email) {
+  if (!username || !password) {
     return res.status(422).json({ error: 'missing username or password' })
   }
 
-  const userEmail = await User.findOne({ email: email })
+  // const userEmail = await User.findOne({ email: email })
 
   const user = await User.findOne({ username: username })
   const passwordCorrect =
     user === null ? false : await bcrypt.compare(password, user.passwordHash)
 
-  if (!(user && passwordCorrect && email)) {
+  if (!(user && passwordCorrect)) {
     return res.status(401).json({
       error: 'invalid username or password',
     })
