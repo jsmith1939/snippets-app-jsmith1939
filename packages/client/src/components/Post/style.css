@@ -5,6 +5,7 @@
 }
 
 #avatar:hover {
-    border: 3px dotted white;
+    border: 5px solid red;
+    background-color: gold;
 }
 
