@@ -12,7 +12,7 @@ import { useProvideAuth } from 'hooks/useAuth'
 import { useRequireAuth } from 'hooks/useRequireAuth'
 import axios from 'utils/axiosConfig.js'
 import { toast } from "react-toastify";
-import Avatar from './Avatar'
+import Avatar from '../components/Post/Avatar'
 
 export default function UserDetailPage({
   match: {
@@ -26,6 +26,7 @@ export default function UserDetailPage({
   const [loading, setLoading] = useState(true)
   const [validated, setValidated] = useState(false)
   const [open, setOpen] = useState(false)
+  const [show, setShow] = useState(false)
   const [data, setData] = useState({
     confirmPassword: '',
     currentPassword: '',
@@ -57,7 +58,14 @@ export default function UserDetailPage({
       [event.target.name]: event.target.value,
     })
   }
-
+  
+  const handleAvatar = async (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    await axios.patch(`/users/${uid}`, {
+      profile_image: profileImage
+    })
+  }
 
   const handleUpdatePassword = async (event) => {
     event.preventDefault()
@@ -128,10 +136,12 @@ export default function UserDetailPage({
               className='w-100 h-100'
             />
           </Figure>
+          <Card.Title>{user.email}</Card.Title>
           <Card.Title>{uid}</Card.Title>
           {state.user.username === uid && (
             <div onClick={() => setOpen(!open)} style={{cursor: 'pointer', color: '#BFBFBF'}}>Edit Password</div>
           )}
+          
           { open && (
             <Container animation="false">
               <div className='row justify-content-center p-4'>
@@ -168,7 +178,6 @@ export default function UserDetailPage({
                         value={data.confirmPassword}
                         onChange={handleInputChange}
                       />
-                      <Avatar picker={(img) => setProfileImage(img)} />
                       <Form.Control.Feedback type='invalid'>
                         New Password is required
                       </Form.Control.Feedback>
@@ -186,6 +195,24 @@ export default function UserDetailPage({
                   </Form>
                 </div>
               </div>
+            </Container>
+          )}
+
+          {state.user.username === uid && (
+            <div onClick={() => setShow(!show)} style={{cursor: 'pointer', color: '#BFBFBF'}}>Edit Avatar</div>
+          )}
+          {show && (
+            <Container animation="false">
+              <Avatar picker={(img) => setProfileImage(img)}/>
+              <Form
+                noValidate
+                validated={validated}
+                onSubmit={handleAvatar}>
+                <Button type='submit' disabled={data.isSubmitting}>
+                {data.isSubmitting ? <LoadingSpinner /> : 'Update'}
+              </Button>
+              </Form>
+              
             </Container>
           )}
         </Card.Body>

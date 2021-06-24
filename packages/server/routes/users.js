@@ -24,7 +24,7 @@ router
     }
   })
   .put(async (request, response) => {
-    const { password, profile_image } = request.body
+    const { password } = request.body
     const { id } = request.params
 
     const hashedpassword = await bcrypt.hash(password, 12)
@@ -36,6 +36,29 @@ router
         },
         {
           passwordHash: hashedpassword,
+        },
+        {
+          new: true,
+          strict: false,
+        }
+      )
+      
+
+      response.json(userUpdate.toJSON())
+    } catch (error) {
+      response.status(404).end()
+    }
+  })
+  .patch(async (request, response) => {
+    const { profile_image } = request.body
+    const { id } = request.params
+
+    try {
+      const userUpdate = await User.findByIdAndUpdate(
+        {
+          _id: id,
+        },
+        {
           profile_image: profile_image,
         },
         {
@@ -43,6 +66,7 @@ router
           strict: false,
         }
       )
+      
 
       response.json(userUpdate.toJSON())
     } catch (error) {
