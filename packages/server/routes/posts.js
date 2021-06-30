@@ -12,7 +12,12 @@ router.get('/', async (request, response) => {
       path: 'comments',
       populate: { path: 'author', select: ['username', 'profile_image'] },
     },
-    // add populate for likes users see above path and populate for example 
+    
+    {
+      path: 'likes',
+      populate: {select: ['username', 'profile_image'] },
+    },
+
   ]
   const posts = await Post.find({})
     .sort({ created: -1 })

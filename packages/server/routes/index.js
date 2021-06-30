@@ -16,6 +16,7 @@ router.use('/users', userRouter)
 router.use('/posts', postRouter)
 router.use('/activity', activityRouter)
 
+// Find alice
 router.get('/alice', async (req, res) => {
   try {
     const alice = await User.findOne({username: 'alice'})
