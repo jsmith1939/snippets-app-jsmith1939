@@ -185,7 +185,7 @@ export default function Feed() {
           <h6>Recent Snips</h6>
           {postError && 'Error fetching posts'}
           {posts &&
-          userInput ? filterSearch.map((post) => <Post key={post._id} post={post} />)  : posts.map((post) => <Post key={post._id} post={post} />)}
+          userInput ? filterSearch.map((post) => <Post key={post._id} post={post} />)  : posts?.map((post) => <Post key={post._id} post={post} />)}
         
         </Container>
       ) : (
