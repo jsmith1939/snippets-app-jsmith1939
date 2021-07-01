@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Container,
+  OverlayTrigger,
+  Tooltip,
   Form,
   Button,
   Media,
@@ -35,8 +37,10 @@ export default function Post({
   const {
     state: { user },
   } = useProvideAuth()
-  const [likedState, setLiked] = useState(likes.includes(user.uid))
+  const [likedState, setLiked] = useState(likes.includes(user.username))
   const [likesState, setLikes] = useState(likes.length)
+  // console.log(likedState)
+  // console.log(likes[0].username)
 
   const [isOpen, setIsOpen] = useState(false)
 
@@ -124,6 +128,12 @@ export default function Post({
       )
   }
 
+  const renderTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      {likedState}
+    </Tooltip>
+  );
+
   useEffect(() => {
     setStateComments(comments)
   }, [comments])
@@ -195,9 +205,16 @@ export default function Post({
                   likedState ? 'isLiked' : ''
                 }`}
               >
-                <Button variant='link' size='md' onClick={handleToggleLike}>
-                  {likedState ? <LikeIconFill /> : <LikeIcon />}
-                </Button>
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 250, hide: 400 }}
+                  overlay={renderTooltip}
+                >
+                  <Button variant='link' size='md' onClick={handleToggleLike}>
+                    {likedState ? <LikeIconFill /> : <LikeIcon />}
+                  </Button>
+                </OverlayTrigger>
+                
                 <span>{likesState}</span>
               </div>
             </div>

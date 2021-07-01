@@ -5,7 +5,11 @@
 }
 
 #avatar:hover {
-    border: 5px solid red;
+    border: 2px solid red;
     background-color: gold;
 }
 
+#avatar.selected {
+    border: 2px solid green;
+    background-color: blue;
+}

@@ -11,7 +11,7 @@ import useRouter from 'hooks/useRouter'
 import { useProvideAuth } from 'hooks/useAuth'
 import { LandingHeader, LoadingSpinner } from 'components'
 import { setAuthToken } from 'utils/axiosConfig'
-import Avatar from '../components/Post/Avatar'
+import Avatar from '../components/Avatar'
 
 const initialState = {
   email: '',
