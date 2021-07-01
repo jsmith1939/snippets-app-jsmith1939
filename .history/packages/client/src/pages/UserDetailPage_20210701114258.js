@@ -65,10 +65,6 @@ export default function UserDetailPage({
     await axios.patch(`/users/${uid}`, {
       profile_image: profileImage
     })
-
-    setTimeout(() => {
-      window.location.reload()
-    },1000)
   }
 
   const handleUpdatePassword = async (event) => {

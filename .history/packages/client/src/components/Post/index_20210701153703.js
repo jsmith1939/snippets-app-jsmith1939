@@ -100,8 +100,6 @@ export default function Post({
       return
     }
 
-    await axios.get('posts/')
-
     setData({
       ...data,
       isSubmitting: true,
@@ -249,7 +247,6 @@ export default function Post({
                     />
                   </Figure>
                   <span>{c.text}</span>
-                  <span className='text-muted'>{timeSince(created)} ago</span>
                 </div>
               ))}
             </Container>

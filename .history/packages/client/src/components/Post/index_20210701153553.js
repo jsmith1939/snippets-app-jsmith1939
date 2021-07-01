@@ -17,6 +17,7 @@ import './Post.scss'
 import { toast } from 'react-toastify'
 import Modal from "react-bootstrap/Modal";
 import "bootstrap/dist/css/bootstrap.min.css";
+import 
 
 const initialState = {
   commentText: '',
@@ -99,8 +100,6 @@ export default function Post({
       setValidated(true)
       return
     }
-
-    await axios.get('posts/')
 
     setData({
       ...data,
@@ -249,7 +248,6 @@ export default function Post({
                     />
                   </Figure>
                   <span>{c.text}</span>
-                  <span className='text-muted'>{timeSince(created)} ago</span>
                 </div>
               ))}
             </Container>

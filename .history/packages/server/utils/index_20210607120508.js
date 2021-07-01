@@ -5,4 +5,3 @@ export const getTokenFrom = (request) => {
   }
   return null
 }
-

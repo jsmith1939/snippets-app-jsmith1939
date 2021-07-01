@@ -100,7 +100,7 @@ export default function Post({
       return
     }
 
-    await axios.get('posts/')
+    await axios.get('post/')
 
     setData({
       ...data,

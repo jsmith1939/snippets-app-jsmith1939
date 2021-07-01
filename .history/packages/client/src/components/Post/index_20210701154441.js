@@ -100,8 +100,6 @@ export default function Post({
       return
     }
 
-    await axios.get('posts/')
-
     setData({
       ...data,
       isSubmitting: true,
