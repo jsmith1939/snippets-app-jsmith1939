@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { Container, Form, Button, FormControl } from 'react-bootstrap'
-import axios from 'utils/axiosConfig.js'
-import { Post } from 'components'
-import LoadingSpinner from 'components/LoadingSpinner'
-import { useProvideAuth } from 'hooks/useAuth'
-import { toast } from 'react-toastify'
+ import React, { useState, useEffect } from 'react'
+import { Container, Form, Button, FormControl } from 'react-bootstrap';
+import axios from 'utils/axiosConfig.js';
+import { Post } from 'components';
+import LoadingSpinner from 'components/LoadingSpinner';
+import { useProvideAuth } from 'hooks/useAuth';
+import { toast } from 'react-toastify';
 // import data from "./data.json";
 // import Item from "./item";
-import Fuse from 'fuse.js'
+import Fuse from 'fuse.js';
 
 const initialState = {
   postText: '',
@@ -24,13 +24,13 @@ export default function Feed() {
   const {
     state: { user },
   } = useProvideAuth()
-  const [posts, setPosts] = useState(null)
+  const [posts, setPosts] = useState([])
   const [postLoading, setPostLoading] = useState(true)
   const [postError, setPostError] = useState(false)
 
   const [data, setData] = useState(initialState);
   const [validated, setValidated] = useState(false)
-  const [searchPost, setSearchPost] = useState('');
+  // const [searchPost, setSearchPost] = useState('');
   const [filterSearch, setFilterSearch] = useState([]);
   const [filterData, setFilterData] = useState(initialSearch);
   const [userInput, setUserInput] = useState(false);
@@ -185,7 +185,7 @@ export default function Feed() {
           <h6>Recent Snips</h6>
           {postError && 'Error fetching posts'}
           {posts &&
-          userInput ? filterSearch.map((post) => <Post key={post._id} post={post} />)  : posts?.map((post) => <Post key={post._id} post={post} />)}
+          userInput ? filterSearch.map((post) => <Post key={post._id} post={post} />)  : posts.map((post) => <Post key={post._id} post={post} />)}
         
         </Container>
       ) : (
