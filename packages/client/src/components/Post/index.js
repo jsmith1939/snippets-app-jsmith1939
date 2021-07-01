@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Container,
-  Popper,
-  Overlays,
+  OverlayTrigger,
+  Tooltip,
   Form,
   Button,
   Media,
   Figure,
   ListGroup,
-} from 'react-bootstrap'
+} from ‘react-bootstrap’
 import useRouter from 'hooks/useRouter'
 import { useProvideAuth } from 'hooks/useAuth'
 import axios from 'utils/axiosConfig.js'
