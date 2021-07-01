@@ -71,6 +71,12 @@ export default function Post({
     }
   }
 
+  const renderTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      {likedState}
+    </Tooltip>
+  );
+
   // Complete function to call server endpoint /posts/:id
   // with delete request
   // 
