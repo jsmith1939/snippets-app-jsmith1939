@@ -33,7 +33,7 @@ const postSchema = new mongoose.Schema(
           type: Date,
           default: Date.now,
         },
-        author: { type: ObjectId, ref: 'User'},
+        author: { type: ObjectId, ref: 'User', },
       },
     ],
   },
