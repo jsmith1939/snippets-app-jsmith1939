@@ -127,7 +127,7 @@ export default function Post({
         }
       )
   }
-// this allows user to hover likes
+
   const renderTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       {likedState}
