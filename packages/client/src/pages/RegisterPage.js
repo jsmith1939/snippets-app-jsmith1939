@@ -11,8 +11,10 @@ import useRouter from 'hooks/useRouter'
 import { useProvideAuth } from 'hooks/useAuth'
 import { LandingHeader, LoadingSpinner } from 'components'
 import { setAuthToken } from 'utils/axiosConfig'
+import Avatar from '../components/Avatar'
 
 const initialState = {
+  email: '',
   username: '',
   password: '',
   isSubmitting: false,
@@ -23,11 +25,10 @@ export default function RegisterPage() {
   const [data, setData] = useState(initialState)
   const auth = useProvideAuth()
   const router = useRouter()
-
   const [profileImage, setProfileImage] = useState(getRandomProfileUrl())
 
   function getRandomProfileUrl() {
-    //geneartes random pic in img
+    //generates random pic in img
     let imgs = [
       'bird.svg',
       'dog.svg',
@@ -41,6 +42,8 @@ export default function RegisterPage() {
     let img = imgs[Math.floor(Math.random() * imgs.length)]
     return `/${img}`
   }
+
+  // 
 
   const handleInputChange = (event) => {
     setData({
@@ -64,7 +67,7 @@ export default function RegisterPage() {
     })
     setProfileImage(getRandomProfileUrl())
     try {
-      const res = await auth.signup(data.username, data.password, profileImage)
+      const res = await auth.signup(data.username, data.password, profileImage, data.email)
       setData({
         ...data,
         isSubmitting: false,
@@ -110,6 +113,23 @@ export default function RegisterPage() {
                     />
                 </InputGroup>
                 </Form.Group>
+                <Form.Group controlId='username-register'>
+                <Form.Label>Email</Form.Label>
+                <InputGroup>
+                    <InputGroup.Prepend>
+                    <InputGroup.Text id='inputGroupPrepend'>@</InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <Form.Control
+                    type='text'
+                    name='email'
+                    placeholder='email'
+                    aria-describedby='inputGroupPrepend'
+                    required
+                    value={data.email}
+                    onChange={handleInputChange}
+                    />
+                </InputGroup>
+                </Form.Group>
                 <Form.Group>
                 <Form.Label htmlFor='Register'>Password</Form.Label>
                 <Form.Control
@@ -120,6 +140,8 @@ export default function RegisterPage() {
                     value={data.password}
                     onChange={handleInputChange}
                 />
+
+                <Avatar picker={(img) => setProfileImage(img)} />
                 </Form.Group>
                 {data.errorMessage && (
                 <span className='form-error text-warning'>{data.errorMessage}</span>

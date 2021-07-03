@@ -1,0 +1,15 @@
+#avatar {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+
+#avatar:hover {
+    border: 2px solid red;
+    background-color: gold;
+}
+
+#avatar.selected {
+    border: 2px solid green;
+    background-color: blue;
+}

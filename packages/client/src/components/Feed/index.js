@@ -1,13 +1,21 @@
-import React, { useState, useEffect } from 'react'
-import { Container, Form, Button } from 'react-bootstrap'
-import axios from 'utils/axiosConfig.js'
-import { Post } from 'components'
-import LoadingSpinner from 'components/LoadingSpinner'
-import { useProvideAuth } from 'hooks/useAuth'
-import { toast } from 'react-toastify'
+ import React, { useState, useEffect } from 'react'
+import { Container, Form, Button, FormControl } from 'react-bootstrap';
+import axios from 'utils/axiosConfig.js';
+import { Post } from 'components';
+import LoadingSpinner from 'components/LoadingSpinner';
+import { useProvideAuth } from 'hooks/useAuth';
+import { toast } from 'react-toastify';
+// import data from "./data.json";
+// import Item from "./item";
+import Fuse from 'fuse.js';
 
 const initialState = {
   postText: '',
+  isSubmitting: false,
+  errorMessage: null,
+}
+const initialSearch = {
+  searchText: '',
   isSubmitting: false,
   errorMessage: null,
 }
@@ -16,12 +24,16 @@ export default function Feed() {
   const {
     state: { user },
   } = useProvideAuth()
-  const [posts, setPosts] = useState(null)
+  const [posts, setPosts] = useState([])
   const [postLoading, setPostLoading] = useState(true)
   const [postError, setPostError] = useState(false)
 
-  const [data, setData] = useState(initialState)
+  const [data, setData] = useState(initialState);
   const [validated, setValidated] = useState(false)
+  // const [searchPost, setSearchPost] = useState('');
+  const [filterSearch, setFilterSearch] = useState([]);
+  const [filterData, setFilterData] = useState(initialSearch);
+  const [userInput, setUserInput] = useState(false);
 
   const handleInputChange = (event) => {
     setData({
@@ -75,6 +87,36 @@ export default function Feed() {
       )
   }
 
+  // this function handles the searches for post history
+  const handleSearch = (event) => {
+    const query = event.target.value.toLowerCase()
+    console.log(query)
+    if (query) {
+      setUserInput(true);
+    } else {
+      setUserInput(false);
+    };
+
+    const fuse = new Fuse(posts, { 
+      keys: ["text", "author.username"]    
+    });    
+
+    const result = fuse.search(query);
+
+    const searchResults = [];
+    result.forEach((item) => {
+      if (result && query) {
+        console.log(item);
+        searchResults.push(item.item);
+      }
+    });
+    setFilterSearch(searchResults);
+    setFilterData({
+      ...filterData,
+      [event.target.name]: event.target.value,
+    })
+  }
+
   useEffect(() => {
     const getPosts = async () => {
       try {
@@ -92,6 +134,17 @@ export default function Feed() {
 
   return (
     <>
+      <Container className='searchPost'>
+        <FormControl
+        type='search'
+        placeholder='Search for Post'
+        size='lg'
+        aria-label='Search'
+        value = {data.searchTag}
+        onChange={handleSearch}
+        name='searchTag'/>
+        
+      </Container>
       <Container className='pt-3 pb-3 clearfix'>
         <h4>Share a Snip</h4>
         <Form
@@ -132,7 +185,8 @@ export default function Feed() {
           <h6>Recent Snips</h6>
           {postError && 'Error fetching posts'}
           {posts &&
-            posts.map((post) => <Post key={post._id} post={post} />)}
+          userInput ? filterSearch.map((post) => <Post key={post._id} post={post} />)  : posts.map((post) => <Post key={post._id} post={post} />)}
+        
         </Container>
       ) : (
         <LoadingSpinner full />

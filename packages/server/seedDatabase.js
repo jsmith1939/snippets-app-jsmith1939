@@ -20,7 +20,7 @@ async function seedDatabase() {
       await exec("mongoimport --db snippets --collection users --file ./db/users.json")
 
       console.log(
-        chalk.green(`Successfuly populated database!!`)
+        chalk.green(`Successfully populated database!!`)
       )
     } else {
       console.log(

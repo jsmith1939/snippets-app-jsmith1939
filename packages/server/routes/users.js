@@ -39,13 +39,39 @@ router
         },
         {
           new: true,
+          strict: false,
         }
       )
+      
 
       response.json(userUpdate.toJSON())
     } catch (error) {
       response.status(404).end()
     }
   })
+  .patch(async (request, response) => {
+    const { profile_image } = request.body
+    const { id } = request.params
+
+    try {
+      const userUpdate = await User.findByIdAndUpdate(
+        {
+          _id: id,
+        },
+        {
+          profile_image: profile_image,
+        },
+        {
+          new: true,
+          strict: false,
+        }
+      )
+      
+
+      response.json(userUpdate.toJSON())
+    } catch (error) {
+      response.status(404).end()
+    }
+  });
 
 module.exports = router
