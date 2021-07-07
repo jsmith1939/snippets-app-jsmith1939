@@ -4,7 +4,6 @@ import userRouter from './users'
 import postRouter from './posts'
 import activityRouter from './activity'
 
-
 const router = express.Router()
 
 router.get('/', (req, res, next) => {

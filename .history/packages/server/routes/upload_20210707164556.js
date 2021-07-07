@@ -1,0 +1,46 @@
+import express from 'express';
+import multer from 'multer';
+import {User} from '../models';
+import {requireAuth} from '../middleware';
+
+const router = express.Router();
+
+const storage = multer.diskStorage({
+  destination: '../client/public', filename: (req, file, cb) => {
+    cb(null, "IMAGE-" + Date.now() + file.originalname);
+  }
+});
+
+const upload = multer ({
+  storage: storage,
+  limits: {fileSize: 200000}
+});
+
+router.get('/', (req, res) => {
+  res.send('upload endpoint working')
+});
+
+router.post{'/', upload.single('file'), requireAuth, async (req, res) => {
+  const {user} = req;
+  try {
+    console.log(req.file)
+    const url = `./${req.file.filename}`;
+
+    const success = await User.findByIdAndUpdate(
+      {
+        _id: user._id,
+      },
+      {
+        profile_image: url,
+      },
+      {
+        new: true,
+      }
+    )
+    res.status(200).json({url: url, user: success})
+  } catch (error) {
+    res.status(400).json({message: error.message})
+  }
+}};
+
+module.exports = router;
